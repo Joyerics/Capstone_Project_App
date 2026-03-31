@@ -3,42 +3,17 @@ import pandas as pd
 import joblib
 
 app = Flask(__name__)
-
-# Load trained ANN pipeline
 model = joblib.load("ANN_HighUse_Pipeline.pkl")
 
 OPTIONS = {
-    "Age": [
-        "15–24 years", "25–34 years", "35–44 years",
-        "45–54 years", "55–64 years", "65 years and over"
-    ],
+    "Age": ["15–24 years", "25–34 years", "35–44 years", "45–54 years", "55–64 years", "65 years and over"],
     "Gender": ["Female", "Male"],
-    "Education": [
-        "High school or less",
-        "Some post-secondary (incl. certificate)",
-        "University degree"
-    ],
+    "Education": ["High school or less", "Some post-secondary (incl. certificate)", "University degree"],
     "Employment": ["Employed", "Not employed"],
-    "Income_Group": [
-        "≤ $42,256",
-        "$42,257 – $72,366",
-        "$72,367 – $107,480",
-        "$107,481 – $163,750",
-        "≥ $163,751"
-    ],
-    "Household_Type": [
-        "Single-person household",
-        "Family with children <18",
-        "Family without children <18"
-    ],
+    "Income_Group": ["≤ $42,256", "$42,257 – $72,366", "$72,367 – $107,480", "$107,481 – $163,750", "≥ $163,751"],
+    "Household_Type": ["Single-person household", "Family with children <18", "Family without children <18"],
     "Online_Shopping": ["Online shopper (≥ $1)", "Did not shop online"],
-    "Rel_Satisfaction": [
-        "Completely satisfied",
-        "Somewhat satisfied",
-        "Neutral",
-        "Somewhat dissatisfied",
-        "Completely dissatisfied"
-    ],
+    "Rel_Satisfaction": ["Completely satisfied", "Somewhat satisfied", "Neutral", "Somewhat dissatisfied", "Completely dissatisfied"],
     "SM_Interfere_Rel": ["No", "Yes"],
     "SM_Interfere_Life": ["No", "Yes"],
     "SM_Anxious_Envious": ["No", "Yes"],
@@ -47,28 +22,16 @@ OPTIONS = {
 }
 
 FEATURE_ORDER = [
-    "Province",
-    "Age",
-    "Gender",
-    "Education",
-    "Employment",
-    "Income_Group",
-    "Weight",
-    "Rel_Satisfaction",
-    "SM_Interfere_Rel",
-    "SM_Interfere_Life",
-    "SM_Anxious_Envious",
-    "SM_AI_Chatbot",
-    "SM_AI_Email",
-    "Household_Type",
-    "Online_Shopping"
+    "Province","Age","Gender","Education","Employment","Income_Group","Weight",
+    "Rel_Satisfaction","SM_Interfere_Rel","SM_Interfere_Life","SM_Anxious_Envious",
+    "SM_AI_Chatbot","SM_AI_Email","Household_Type","Online_Shopping"
 ]
 
 RESEARCH_LIBRARY = {
     "screen_time": {
         "title": "Reduce daily screen time",
         "text": "Reducing daily screen time can improve mental health, lower stress, and support better sleep quality.",
-        "source_title": "Randomized Controlled Trial on Screen Time Reduction and Mental Health",
+        "source_title": "Randomized controlled trial on screen time reduction and mental health",
         "source_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11846175/"
     },
     "detox": {
@@ -79,7 +42,7 @@ RESEARCH_LIBRARY = {
     },
     "sleep_activity": {
         "title": "Protect sleep and physical activity",
-        "text": "Better sleep habits and more physical activity can reduce the negative effects linked to heavy screen use.",
+        "text": "Better sleep habits and more physical activity can reduce negative effects linked to heavy screen use.",
         "source_title": "Nature study on screen time, sleep, and mental health",
         "source_url": "https://www.nature.com/articles/s41599-026-06609-1"
     },
@@ -99,7 +62,7 @@ RESEARCH_LIBRARY = {
 
 def build_input(form_data):
     row = {
-        "Province": "Ontario",  # model was trained on Ontario data
+        "Province": "Ontario",
         "Age": form_data.get("Age"),
         "Gender": form_data.get("Gender"),
         "Education": form_data.get("Education"),
@@ -119,33 +82,26 @@ def build_input(form_data):
 
 def build_recommendations(form_data, probability):
     recommendations = []
-
-    # High-probability / heavier-use recommendations
     if probability >= 60:
         recommendations.append(RESEARCH_LIBRARY["screen_time"])
         recommendations.append(RESEARCH_LIBRARY["detox"])
         recommendations.append(RESEARCH_LIBRARY["lower_usage"])
-
-    # Universal recommendation
     recommendations.append(RESEARCH_LIBRARY["sleep_activity"])
-
-    # Trigger-based recommendation
     if form_data.get("SM_Anxious_Envious") == "Yes":
         recommendations.append(RESEARCH_LIBRARY["emotional_exposure"])
 
-    # Remove duplicates while keeping order
     seen = set()
-    unique = []
+    final = []
     for rec in recommendations:
-        key = rec["title"]
-        if key not in seen:
-            unique.append(rec)
-            seen.add(key)
-
-    return unique
+        if rec["title"] not in seen:
+            final.append(rec)
+            seen.add(rec["title"])
+    return final
 
 @app.route("/", methods=["GET", "POST"])
 def home():
+    submitted = {key: "" for key in OPTIONS}
+    weight = "1.0"
     prediction = None
     probability = None
     score_band = None
@@ -153,11 +109,8 @@ def home():
     signals = []
     recommendations = []
 
-    submitted = {key: "" for key in OPTIONS.keys()}
-    weight = "1.0"
-
     if request.method == "POST":
-        submitted = {key: request.form.get(key, "") for key in OPTIONS.keys()}
+        submitted = {key: request.form.get(key, "") for key in OPTIONS}
         weight = request.form.get("Weight", "1.0")
 
         input_df = build_input(request.form)

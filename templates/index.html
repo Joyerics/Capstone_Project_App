@@ -24,8 +24,8 @@
     </div>
     <div class="top-actions">
       <span class="chip">ANN model</span>
-      <span class="chip">Ontario dataset</span>
-      <span class="chip">Research-backed recommendations</span>
+      <span class="chip">Binary output</span>
+      <span class="chip">Research-based recommendations</span>
     </div>
   </header>
 
@@ -33,11 +33,8 @@
     <section class="hero">
       <div class="hero-copy">
         <div class="eyebrow">Predictive analytics for digital behavior</div>
-        <h1>ANN prediction with research-based recommendations built into the experience.</h1>
-        <p>
-          Enter user profile and behavior signals, then generate a clean model-backed
-          prediction, confidence score, and evidence-based recommendation set.
-        </p>
+        <h1>Clean ANN prediction with premium recommendation cards.</h1>
+        <p>Enter profile and behavior signals to generate a binary usage prediction, confidence score, and evidence-based recommendations.</p>
 
         <div class="hero-stats">
           <div class="stat">
@@ -45,26 +42,26 @@
             <div class="stat-label">ANN test accuracy</div>
           </div>
           <div class="stat">
-            <div class="stat-value">Binary</div>
-            <div class="stat-label">High vs Not-High</div>
+            <div class="stat-value">15</div>
+            <div class="stat-label">Input features</div>
           </div>
           <div class="stat">
             <div class="stat-value">Cited</div>
-            <div class="stat-label">Recommendations</div>
+            <div class="stat-label">Recommendation source links</div>
           </div>
         </div>
       </div>
 
       <div class="hero-panel">
         <div class="mini-card">
-          <div class="mini-kicker">Model output</div>
+          <div class="mini-kicker">Prediction</div>
           <h3>Fast scoring</h3>
-          <p>Get a binary prediction, probability, and an interpretation summary from the saved ANN pipeline.</p>
+          <p>Runs the saved ANN pipeline and returns a polished binary prediction with confidence.</p>
         </div>
         <div class="mini-card">
-          <div class="mini-kicker">Recommendation layer</div>
-          <h3>Evidence-based guidance</h3>
-          <p>The app recommends actions based on published studies, not personal opinion.</p>
+          <div class="mini-kicker">Evidence</div>
+          <h3>Research-backed guidance</h3>
+          <p>Recommendations come from published studies and each card includes a source link.</p>
         </div>
       </div>
     </section>
@@ -76,7 +73,7 @@
             <div class="panel-kicker">Input workspace</div>
             <h2>Profile & behavior form</h2>
           </div>
-          <p>Dropdown inputs reduce errors and keep the prediction flow clean and professional.</p>
+          <p>Dropdown inputs reduce typing errors and keep the app clean.</p>
         </div>
 
         <form method="POST">
@@ -116,7 +113,7 @@
 
           <div class="cta-row">
             <button class="btn-primary" type="submit">Run Prediction</button>
-            <div class="helper-text">This version includes premium recommendation cards with source links.</div>
+            <div class="helper-text">Dark dropdowns are enabled in this version.</div>
           </div>
         </form>
       </section>
@@ -156,7 +153,6 @@
 
           <div class="recommendation-block">
             <div class="insight-title">Research-based recommendations</div>
-
             {% for rec in recommendations %}
             <article class="recommendation-card">
               <div class="recommendation-top">
@@ -171,9 +167,7 @@
                 <summary>Why this recommendation?</summary>
                 <div class="source-box">
                   <div class="source-title">{{ rec.source_title }}</div>
-                  <a href="{{ rec.source_url }}" target="_blank" rel="noopener noreferrer">
-                    View research source
-                  </a>
+                  <a href="{{ rec.source_url }}" target="_blank" rel="noopener noreferrer">View research source</a>
                 </div>
               </details>
             </article>
@@ -189,7 +183,7 @@
         <div class="empty">
           <div class="empty-icon">◎</div>
           <h3>Prediction ready</h3>
-          <p>Complete the form to generate a live ANN prediction with confidence score and premium recommendation cards.</p>
+          <p>Complete the form to generate a live ANN prediction with recommendation cards and source links.</p>
 
           <div class="empty-grid">
             <div class="empty-metric"><strong>Fast</strong><span>Single-click scoring</span></div>

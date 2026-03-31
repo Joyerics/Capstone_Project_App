@@ -11,14 +11,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif}
 body{min-height:100vh;position:relative;overflow-x:hidden}
-.bg-grid{
-  position:fixed;inset:0;opacity:.16;
-  background-image:
-    linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
-  background-size:38px 38px;
-  mask-image:radial-gradient(circle at center, black 32%, transparent 82%);
-}
+.bg-grid{position:fixed;inset:0;opacity:.16;background-image:linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);background-size:38px 38px;mask-image:radial-gradient(circle at center, black 32%, transparent 82%)}
 .glow{position:fixed;border-radius:999px;filter:blur(90px);opacity:.32;pointer-events:none}
 .glow-a{width:360px;height:360px;background:#0ea5e9;left:-80px;top:120px}
 .glow-b{width:440px;height:440px;background:#7c3aed;right:-120px;top:40px}
@@ -56,8 +49,11 @@ body{min-height:100vh;position:relative;overflow-x:hidden}
 .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .field{display:flex;flex-direction:column;gap:8px}
 .field span{font-size:14px;color:#d8e5fb;font-weight:600}
-select,input{width:100%;padding:15px 15px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.035);color:var(--text);font-size:15px;outline:none}
+select,input{width:100%;padding:15px 15px;border-radius:16px;border:1px solid var(--line);background:#0f172a;color:var(--text);font-size:15px;outline:none;appearance:none;-webkit-appearance:none;-moz-appearance:none;color-scheme:dark;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 20 20'><path d='M5 7l5 6 5-6z'/></svg>");background-repeat:no-repeat;background-position:right 14px center;background-size:16px}
+input{background-image:none}
+select::-ms-expand{display:none}
 select:focus,input:focus{border-color:rgba(89,208,255,.7);box-shadow:0 0 0 4px rgba(89,208,255,.12)}
+option{background:#0f172a;color:#eff6ff}
 .cta-row{margin-top:22px}
 .btn-primary{width:100%;padding:17px 18px;border:0;border-radius:18px;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;font-weight:800;font-size:16px;letter-spacing:.01em}
 .helper-text{margin-top:10px;color:var(--muted);font-size:13px}
@@ -77,10 +73,7 @@ select:focus,input:focus{border-color:rgba(89,208,255,.7);box-shadow:0 0 0 4px r
 .note-card p{margin:0;color:var(--muted);line-height:1.7}
 .recommendation-block{margin-top:18px}
 .recommendation-top{display:grid;grid-template-columns:42px 1fr;gap:14px;align-items:flex-start}
-.recommendation-icon{
-  width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
-  background:linear-gradient(135deg,var(--accent),var(--accent-2));font-weight:900
-}
+.recommendation-icon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent-2));font-weight:900}
 .recommendation-card h4{margin:0 0 8px;font-size:20px}
 .recommendation-card p{margin:0;color:var(--muted);line-height:1.65}
 .source-dropdown{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
