@@ -81,33 +81,24 @@ def build_input(form_data):
     return pd.DataFrame([[row[col] for col in FEATURE_ORDER]], columns=FEATURE_ORDER)
 
 def build_recommendations(form_data, probability):
-    recommendations = []
+    recs = []
     if probability >= 60:
-        recommendations.append(RESEARCH_LIBRARY["screen_time"])
-        recommendations.append(RESEARCH_LIBRARY["detox"])
-        recommendations.append(RESEARCH_LIBRARY["lower_usage"])
-    recommendations.append(RESEARCH_LIBRARY["sleep_activity"])
+        recs.extend([RESEARCH_LIBRARY["screen_time"], RESEARCH_LIBRARY["detox"], RESEARCH_LIBRARY["lower_usage"]])
+    recs.append(RESEARCH_LIBRARY["sleep_activity"])
     if form_data.get("SM_Anxious_Envious") == "Yes":
-        recommendations.append(RESEARCH_LIBRARY["emotional_exposure"])
-
-    seen = set()
-    final = []
-    for rec in recommendations:
+        recs.append(RESEARCH_LIBRARY["emotional_exposure"])
+    seen, out = set(), []
+    for rec in recs:
         if rec["title"] not in seen:
-            final.append(rec)
-            seen.add(rec["title"])
-    return final
+            out.append(rec); seen.add(rec["title"])
+    return out
 
 @app.route("/", methods=["GET", "POST"])
 def home():
     submitted = {key: "" for key in OPTIONS}
     weight = "1.0"
-    prediction = None
-    probability = None
-    score_band = None
-    summary = None
-    signals = []
-    recommendations = []
+    prediction = probability = score_band = summary = None
+    signals, recommendations = [], []
 
     if request.method == "POST":
         submitted = {key: request.form.get(key, "") for key in OPTIONS}
@@ -143,18 +134,12 @@ def home():
 
         recommendations = build_recommendations(request.form, probability)
 
-    return render_template(
-        "index.html",
-        options=OPTIONS,
-        submitted=submitted,
-        weight=weight,
-        prediction=prediction,
-        probability=probability,
-        score_band=score_band,
-        summary=summary,
-        signals=signals,
-        recommendations=recommendations
-    )
+    return render_template("index.html", options=OPTIONS, submitted=submitted, weight=weight,
+                           prediction=prediction, probability=probability, score_band=score_band,
+                           summary=summary, signals=signals, recommendations=recommendations)
+
+import os
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
