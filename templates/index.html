@@ -3,98 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>SocialPulse AI</title>
+  <title>Social Media Usage Predictor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-  <div class="bg-grid"></div>
-  <div class="glow glow-a"></div>
-  <div class="glow glow-b"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
 
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-mark">S</div>
-      <div>
-        <div class="brand-name">SocialPulse AI</div>
-        <div class="brand-sub">Usage risk intelligence</div>
-      </div>
-    </div>
-    <div class="top-actions">
-      <span class="chip">ANN model</span>
-      <span class="chip">Binary output</span>
-      <span class="chip">Research-based recommendations</span>
-    </div>
-  </header>
-
-  <main class="wrap">
+  <main class="page">
     <section class="hero">
-      <div class="hero-copy">
-        <div class="eyebrow">Predictive analytics for digital behavior</div>
-        <h1>Clean ANN prediction with premium recommendation cards.</h1>
-        <p>Enter profile and behavior signals to generate a binary usage prediction, confidence score, and evidence-based recommendations.</p>
-
-        <div class="hero-stats">
-          <div class="stat">
-            <div class="stat-value">78.2%</div>
-            <div class="stat-label">ANN test accuracy</div>
-          </div>
-          <div class="stat">
-            <div class="stat-value">15</div>
-            <div class="stat-label">Input features</div>
-          </div>
-          <div class="stat">
-            <div class="stat-value">Cited</div>
-            <div class="stat-label">Recommendation source links</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="hero-panel">
-        <div class="mini-card">
-          <div class="mini-kicker">Prediction</div>
-          <h3>Fast scoring</h3>
-          <p>Runs the saved ANN pipeline and returns a polished binary prediction with confidence.</p>
-        </div>
-        <div class="mini-card">
-          <div class="mini-kicker">Evidence</div>
-          <h3>Research-backed guidance</h3>
-          <p>Recommendations come from published studies and each card includes a source link.</p>
-        </div>
-      </div>
+      <h1>Social Media Usage Predictor</h1>
+      <p>ANN prediction with research-based recommendations.</p>
     </section>
 
-    <section class="workspace">
-      <section class="panel form-panel">
-        <div class="panel-head">
-          <div>
-            <div class="panel-kicker">Input workspace</div>
-            <h2>Profile & behavior form</h2>
-          </div>
-          <p>Dropdown inputs reduce typing errors and keep the app clean.</p>
-        </div>
-
+    <section class="layout">
+      <section class="card">
+        <h2>User Inputs</h2>
         <form method="POST">
-          <div class="group-title">Demographics</div>
-          <div class="form-grid">
-            {% for field in ["Age","Gender","Education","Employment","Income_Group","Household_Type"] %}
-            <label class="field">
-              <span>{{ field.replace("_", " ") }}</span>
-              <select name="{{ field }}" required>
-                <option value="" disabled {% if not submitted[field] %}selected{% endif %}>Select</option>
-                {% for item in options[field] %}
-                <option value="{{ item }}" {% if submitted[field] == item %}selected{% endif %}>{{ item }}</option>
-                {% endfor %}
-              </select>
-            </label>
-            {% endfor %}
-          </div>
-
-          <div class="group-title">Digital behavior & self-report</div>
-          <div class="form-grid">
-            {% for field in ["Online_Shopping","Rel_Satisfaction","SM_Interfere_Rel","SM_Interfere_Life","SM_Anxious_Envious","SM_AI_Chatbot","SM_AI_Email"] %}
+          <div class="grid">
+            {% for field in ["Age","Gender","Education","Employment","Income_Group","Household_Type","Online_Shopping","Rel_Satisfaction","SM_Interfere_Rel","SM_Interfere_Life","SM_Anxious_Envious","SM_AI_Chatbot","SM_AI_Email"] %}
             <label class="field">
               <span>{{ field.replace("_", " ") }}</span>
               <select name="{{ field }}" required>
@@ -110,87 +40,36 @@
               <input type="number" step="0.1" min="0" name="Weight" value="{{ weight }}" required>
             </label>
           </div>
-
-          <div class="cta-row">
-            <button class="btn-primary" type="submit">Run Prediction</button>
-            <div class="helper-text">Dark dropdowns are enabled in this version.</div>
-          </div>
+          <button type="submit" class="btn">Run Prediction</button>
         </form>
       </section>
 
-      <aside class="panel result-panel">
-        <div class="panel-head">
-          <div>
-            <div class="panel-kicker">Prediction output</div>
-            <h2>Model result</h2>
-          </div>
+      <aside class="card">
+        <h2>Result</h2>
+        {% if prediction %}
+        <div class="result-box">
+          <div class="pill">{{ prediction }}</div>
+          <div class="probability">Probability of high usage: <strong>{{ probability }}%</strong></div>
         </div>
 
-        {% if prediction %}
-        <div class="result-shell">
-          <div class="result-badge">{{ score_band }}</div>
-          <h3>{{ prediction }}</h3>
-          <p class="result-summary">{{ summary }}</p>
-
-          <div class="meter-wrap">
-            <div class="meter-label">
-              <span>Probability of high usage</span>
-              <strong>{{ probability }}%</strong>
-            </div>
-            <div class="meter">
-              <div class="meter-fill" style="width: {{ probability }}%"></div>
-            </div>
-          </div>
-
-          <div class="insight-card">
-            <div class="insight-title">Key model-facing signals</div>
-            <ul>
-              {% for item in signals %}
-              <li>{{ item }}</li>
-              {% endfor %}
-            </ul>
-          </div>
-
-          <div class="recommendation-block">
-            <div class="insight-title">Research-based recommendations</div>
-            {% for rec in recommendations %}
-            <article class="recommendation-card">
-              <div class="recommendation-top">
-                <div class="recommendation-icon">✦</div>
-                <div>
-                  <h4>{{ rec.title }}</h4>
-                  <p>{{ rec.text }}</p>
-                </div>
+        <div class="recommendations">
+          <h3>Research-Based Recommendations</h3>
+          {% for rec in recommendations %}
+          <div class="recommendation">
+            <h4>{{ rec.title }}</h4>
+            <p>{{ rec.text }}</p>
+            <details>
+              <summary>View source</summary>
+              <div class="source">
+                <div>{{ rec.source_title }}</div>
+                <a href="{{ rec.source_url }}" target="_blank" rel="noopener noreferrer">{{ rec.source_url }}</a>
               </div>
-
-              <details class="source-dropdown">
-                <summary>Why this recommendation?</summary>
-                <div class="source-box">
-                  <div class="source-title">{{ rec.source_title }}</div>
-                  <a href="{{ rec.source_url }}" target="_blank" rel="noopener noreferrer">View research source</a>
-                </div>
-              </details>
-            </article>
-            {% endfor %}
+            </details>
           </div>
-
-          <div class="note-card">
-            <div class="note-title">Interpretation note</div>
-            <p>This output is a behavioral classification result. It is not a medical or mental health diagnosis.</p>
-          </div>
+          {% endfor %}
         </div>
         {% else %}
-        <div class="empty">
-          <div class="empty-icon">◎</div>
-          <h3>Prediction ready</h3>
-          <p>Complete the form to generate a live ANN prediction with recommendation cards and source links.</p>
-
-          <div class="empty-grid">
-            <div class="empty-metric"><strong>Fast</strong><span>Single-click scoring</span></div>
-            <div class="empty-metric"><strong>Clean</strong><span>Presentation-ready output</span></div>
-            <div class="empty-metric"><strong>Cited</strong><span>Each recommendation shows its source</span></div>
-          </div>
-        </div>
+        <p class="placeholder">Fill the form and run a prediction to see the result and recommendations.</p>
         {% endif %}
       </aside>
     </section>
