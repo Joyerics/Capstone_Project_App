@@ -11,10 +11,3 @@ Local:
 3. pip install -r requirements.txt
 4. python app.py
 5. Open http://127.0.0.1:5000
-
-Render:
-1. Replace repo files with this bundle
-2. Push to GitHub
-3. Manual Deploy -> Deploy latest commit
-4. Build command: pip install -r requirements.txt
-5. Start command: gunicorn app:app
