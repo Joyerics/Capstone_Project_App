@@ -1,0 +1,65 @@
+# Python
+
+**pycache**/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual Environment
+
+venv/
+env/
+ENV/
+
+# Jupyter Notebook checkpoints
+
+.ipynb_checkpoints/
+
+# Environment variables
+
+.env
+
+# OS files
+
+.DS_Store
+Thumbs.db
+
+# Logs
+
+*.log
+
+# Model artifacts 
+
+# *.pkl
+
+# Cache
+
+.cache/
+
+# VS Code
+
+.vscode/
+
+# Mac system files
+
+.AppleDouble
+.LSOverride
+
+# Temporary files
+
+*.tmp
+*.temp
+
+# Build files
+
+build/
+dist/
+*.egg-info/
+
+# Node (if frontend tools used)
+
+node_modules/
+
+# Render / deployment
+
+*.sqlite3
