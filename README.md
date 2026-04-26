@@ -103,8 +103,8 @@ Each recommendation in the app is backed by **peer-reviewed literature**.
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+git clone https://github.com/Joyerics/Capstone_Project_App.git
+cd Capstone_Project_App
 ```
 
 ### 2. Create Virtual Environment
